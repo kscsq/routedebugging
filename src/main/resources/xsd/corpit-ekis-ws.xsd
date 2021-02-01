@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.4-b01. -->
+<xs:schema xmlns:tns="http://ws.ekis.corpit/" xmlns:ns1="http://rgs.ru/esb/" xmlns:ns3="http://rgs.ru/schema/payment10" xmlns:ns2="http://rgs.ru/schema/payment20" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.ekis.corpit/">
+
+    <xs:import namespace="http://rgs.ru/schema/common10" schemaLocation="common-1.0.xsd"></xs:import>
+
+    <xs:import namespace="http://rgs.ru/schema/payment20" schemaLocation="payment-2.0.xsd"></xs:import>
+
+    <xs:import namespace="http://rgs.ru/schema/payment10" schemaLocation="payment-1.0.xsd"></xs:import>
+
+    <xs:import namespace="http://rgs.ru/esb/" schemaLocation="Notification-1.1.xsd"></xs:import>
+
+    <xs:element name="ServiceException" nillable="true" type="tns:ServiceException"></xs:element>
+
+    <xs:element name="checkCreate">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ns2:Check" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="checkCreateResponse" type="tns:checkCreateResponse"></xs:element>
+
+    <xs:element name="matchPaymentToInvoice" type="tns:matchPaymentToInvoice"></xs:element>
+
+    <xs:element name="matchPaymentToInvoiceResponse" type="tns:matchPaymentToInvoiceResponse"></xs:element>
+
+    <xs:complexType name="checkCreateResponse">
+        <xs:sequence></xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ServiceException">
+        <xs:sequence>
+            <xs:element name="message" type="xs:string" minOccurs="0"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="matchPaymentToInvoice">
+        <xs:sequence>
+            <xs:element ref="ns3:MatchingDocument" minOccurs="0"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="matchPaymentToInvoiceResponse">
+        <xs:sequence></xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="storeArchivalResultResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="storeArchivalResult">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="xml" type="xs:string" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="receiveNotification">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ns1:Notification" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="receiveNotificationResponse">
+        <xs:complexType>
+            <xs:sequence></xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="receivePackageData">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="packageData" type="xs:string" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="receivePackageDataResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

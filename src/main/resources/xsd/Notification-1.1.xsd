@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by  (IC Rosgosstrakh, PJSC) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://rgs.ru/esb/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://rgs.ru/esb/">
+    <complexType name="TechnicalDataType">
+        <sequence>
+            <element name="Originator" type="string">
+                <annotation>
+                    <documentation>Код системы-отправителя оригинального сообщения. СКК 6.1.27</documentation>
+                </annotation>
+            </element>
+            <element name="MessageId" type="string">
+                <annotation>
+                    <documentation>Уникальный идентификатор сообщения</documentation>
+                </annotation>
+            </element>
+            <element name="CorrelationId" type="string">
+                <annotation>
+                    <documentation>Бизнес идентификатор сообщения. Данный идентификатор позволяет системе инициатору
+                        однозначно ассоциировать пришедший ответ с запросом
+                    </documentation>
+                </annotation>
+            </element>
+            <element name="MessageCode" type="string">
+                <annotation>
+                    <documentation>Код сообщения</documentation>
+                </annotation>
+            </element>
+            <element name="MessageType" type="string">
+                <annotation>
+                    <documentation>Тип сообщения</documentation>
+                </annotation>
+            </element>
+            <element name="Priority" type="integer" minOccurs="0">
+                <annotation>
+                    <documentation>Приоритет выгружаемого сообщения. 0 – низший, 9 – высший</documentation>
+                </annotation>
+            </element>
+            <element name="GroupId" type="string" minOccurs="0">
+                <annotation>
+                    <documentation>Уникальный идентификатор группы сообщений</documentation>
+                </annotation>
+            </element>
+            <element name="GroupSeq" type="string" minOccurs="0">
+                <annotation>
+                    <documentation>Уникальный идентификатор сообщения в рамках группы</documentation>
+                </annotation>
+            </element>
+            <element name="Recipients" type="string" minOccurs="0"/>
+            <element name="ResponseRequired" type="boolean" minOccurs="0">
+                <annotation>
+                    <documentation>Требуется немедленный ответ</documentation>
+                </annotation>
+            </element>
+            <element name="NotificationRequired" type="boolean" minOccurs="0">
+                <annotation>
+                    <documentation>Требуется подтверждение обработки</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <complexType name="Summary">
+        <sequence>
+            <element name="System" type="string" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>Система, сформировавшая нотификацию</documentation>
+                </annotation>
+            </element>
+            <element name="Status" type="tns:StatusCode" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>Общий статус доставки сообщения</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <complexType name="System">
+        <sequence>
+            <element name="SysName" type="string" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>Название системы, в которой произошло событие</documentation>
+                </annotation>
+            </element>
+            <element name="GeneralStatus" type="tns:StatusCode" minOccurs="1">
+                <annotation>
+                    <documentation>Общий статус ответа системы</documentation>
+                </annotation>
+            </element>
+            <element name="Details" minOccurs="0" maxOccurs="1">
+                <complexType>
+                    <sequence>
+                        <element name="Detail" minOccurs="1" maxOccurs="unbounded">
+                            <complexType>
+                                <sequence>
+                                    <element name="Component" type="string" minOccurs="1" maxOccurs="1">
+                                        <annotation>
+                                            <documentation>Компонент системы, в котором произошло событие
+                                            </documentation>
+                                        </annotation>
+                                    </element>
+                                    <element name="EntityId" type="string" minOccurs="0" maxOccurs="1">
+                                        <annotation>
+                                            <documentation>Идентификатор объекта</documentation>
+                                        </annotation>
+                                    </element>
+                                    <element name="Status" type="tns:StatusCode" minOccurs="1" maxOccurs="1">
+                                        <annotation>
+                                            <documentation>Статус</documentation>
+                                        </annotation>
+                                    </element>
+                                    <element name="DateTime" type="dateTime" minOccurs="0" maxOccurs="1">
+                                        <annotation>
+                                            <documentation>Время возникновения события</documentation>
+                                        </annotation>
+                                    </element>
+                                    <element name="ExtendedDetails" minOccurs="0" maxOccurs="1">
+                                        <complexType>
+                                            <sequence>
+                                                <element name="ExtendedDetail" type="tns:ExtendedDetail" minOccurs="1"
+                                                         maxOccurs="unbounded"/>
+                                            </sequence>
+                                        </complexType>
+                                    </element>
+                                </sequence>
+                            </complexType>
+                        </element>
+                    </sequence>
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+    <complexType name="ExtendedDetail">
+        <sequence>
+            <element name="Code" type="string" minOccurs="1" maxOccurs="1">
+                <annotation>
+                    <documentation>Код события</documentation>
+                </annotation>
+            </element>
+            <element name="Description" type="string" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Описание события</documentation>
+                </annotation>
+            </element>
+            <element name="Message" type="string" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Подробное описание, как вариант stacktrace</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <simpleType name="StatusCode">
+        <restriction base="xsd:string">
+            <enumeration value="ERROR"/>
+            <enumeration value="SUCCESS"/>
+            <enumeration value="WARNING"/>
+        </restriction>
+    </simpleType>
+    <element name="Notification">
+        <complexType>
+            <sequence>
+                <element name="TechnicalData" type="tns:TechnicalDataType" minOccurs="0">
+                    <annotation>
+                        <documentation>Техническая информация сообщения</documentation>
+                    </annotation>
+                </element>
+                <element name="Summary" type="tns:Summary" minOccurs="1" maxOccurs="1"/>
+                <element name="Systems" minOccurs="1" maxOccurs="1">
+                    <complexType>
+                        <sequence>
+                            <element name="System" type="tns:System" minOccurs="1" maxOccurs="unbounded"/>
+                        </sequence>
+                    </complexType>
+                </element>
+            </sequence>
+        </complexType>
+    </element>
+</schema>

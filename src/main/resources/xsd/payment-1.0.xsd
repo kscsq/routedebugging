@@ -1,0 +1,1508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:pay="http://rgs.ru/schema/payment10" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://rgs.ru/schema/common10" targetNamespace="http://rgs.ru/schema/payment10" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.8">
+	<xs:import namespace="http://rgs.ru/schema/common10" schemaLocation="common-1.0.xsd"/>
+	<xs:complexType name="PaymentPersonType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания информации о плательщике/получателе</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Person" type="cmn:PersonType">
+				<xs:annotation>
+					<xs:documentation>Информация о контрагенте</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceDataType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания счёта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Invoice" type="cmn:InvoiceType">
+				<xs:annotation>
+					<xs:documentation>Cчет</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Payer" type="cmn:PersonType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о плательщике (кому выставляется счёт)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа плательщика
+
+SysId = XML;
+Type = PAYER_TYPE 
+Ids: 
+1 - Клиент
+2 - Посредник</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AgentCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код агента, например, ЛНР</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RecipientName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование получателя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RecipientAccount" type="pay:InvoiceAccountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Банковские реквизиты получателя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AgentContractId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор договора с агентом
+
+Type=AGENTCONTRACT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LinkedDocuments" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ссылки на произволные документы (например, квитанции А7)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DocumentId" type="cmn:ObjIdType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Contracts" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о договорах страхования, к которым относится данный счёт. Используется для более корректного сопоставления счетов и платёжных документов</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Contract" type="pay:InvoiceContractType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Информация о договоре страхования, к которому относится счёт</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="InvoiceData" type="pay:InvoiceDataType">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи информации о счёте</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentOrder" type="pay:PaymentOrderType">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи информации о запросе на выплату</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="PaymentOrderType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания счёта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentOrderId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор распоряжения на выплату
+
+Type=PAYMENTORDER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevPaymentOrderId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор предыдущего распоряжения на выплату. Заполняется в случае, если текущее распоряжение на выплату является повторным. Нужен для получения ряда атрибутов с предыдущего распоряжения на выплату</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BranchCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код подразделения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentMethodId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор метода оплаты. Справочник в СКК 7.10.22
+
+SysId=SCC2
+Type=PAYMENT_OPTION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата выставления документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта выплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа в валюте выплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentOrderProperties" type="cmn:PropertyListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дополнительные атрибуты счёта(расопряжения на выплату)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Recipient" type="pay:PaymentPersonType">
+				<xs:annotation>
+					<xs:documentation>Информация о получателе</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование плательщика</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Account" type="pay:InvoiceAccountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Банковские реквизиты для осуществления выплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="PaymentDocumentType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания платёжного документа</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentDocumentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра документа, подтверждающего оплату
+
+Type=PAYMENTDOCUMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentDocumentTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа платёжного документа. СКК 7.4.33
+
+Type=DICTPAYMENTDOCUMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentMethodId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор метода оплаты. Справочник в СКК 7.10.22
+
+SysId=SCC2
+Type=PAYMENT_OPTION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время оплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurrencyCode">
+				<xs:annotation>
+					<xs:documentation>Код валюты сопоставления (USD, EUR,RUB и т.п.). Это или валюта счёта или валюта платёжных документов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа, подтверждающего оплату</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер документа, подтверждающего оплату</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentPurpose" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Назначение платежа. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuthCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код авторизации. Используется для сопоставления платежа и счёта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер заказа. Используется для сопоставления платежа и счёта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RecipientFullName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ФИО получателя денег от клиента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActualPayer" type="pay:ActualPayerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о плательщике из платёжного документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumCash" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты наличными</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumCashless" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты безналичным методом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Примечания</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Contracts" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о договорах, который оплачитваются/зачитываются и т.п.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Contract" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ContractSeries" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Серия договора</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="ContractNumber" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Номер договора</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="InsurancePremiumRUB" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Оплаченная премия по договору</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentNdflDocumentType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания платёжного документа НДФЛ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentDocumentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра документа, подтверждающего оплату
+
+Type=PAYMENTDOCUMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DepartmentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор подразделения по которому начисляются суммы РПВ по сотрудникам 
+
+Type=DEPARTMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayoutDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время выплаты НДФЛ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата платежного поручения на перечисление НДФЛ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Amount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа, подтверждающего оплату</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер документа, подтверждающего оплату</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Kpp" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>КПП  подразделения по которому начисляются суммы РПВ по сотрудникам </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Oktmo" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ОКТМО  подразделения по которому начисляются суммы РПВ по сотрудникам </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentContentType">
+		<xs:annotation>
+			<xs:documentation>Содержимое документа (платёжного, деталзация счёта и т.п.)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DocumentContentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор строки наполнения документа
+
+Type=DOCUMENTCONTENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatchingId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор операции сопоставления
+
+Type=MATCHING</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocumentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор докумета, по которому строится детализация.
+
+Type заполнять в соответствии с типом документа, по которому идёт данная расшифровка, например для счёта это 
+INVOICE, а для платёжного документа это
+PAYMENTDOCUMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="InsuranceActContent" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Содержимое страхового акта, по которому производится выплата</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="InsuranceActId" type="cmn:ObjIdType">
+								<xs:annotation>
+									<xs:documentation>Идентификатор страхового акта
+
+Type=INSURANCEACT</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CoverContent" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Содержимое по покрытию</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CoverId" type="cmn:ObjIdType">
+								<xs:annotation>
+									<xs:documentation>Идентификатор покрытия</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="CoverTypeId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор типа страхового покрытия
+
+SysID = SCC2
+Type 
+для АРМ
+DICTRISKOBJECTTYPE_22
+для ЕКИС
+S_RISKS</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ProductId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор Страхового продукта.
+В терминах GW это Offering, для остальных систем это продукт
+
+Type = PRODUCT</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="MainContractId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор первичного договора в системе-источнике.
+Для договора передавать значение из ContractId. Для дополнительных соглашений передавать идентификатор  договора.
+
+Type=CONTRACT</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Amount" type="xs:decimal">
+								<xs:annotation>
+									<xs:documentation>Сумма оплаты по покрытию</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Currency" type="cmn:CurrencyType">
+								<xs:annotation>
+									<xs:documentation>Валюта</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="AmountRUB" type="xs:decimal">
+								<xs:annotation>
+									<xs:documentation>Сумма оплаты по покрытию в рублях</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PaymentSchedulleId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор строки плана-графика договора</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ClientInvoiceId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор клиентского счёта. Заполняется тогда, когда осуществляется оплата страхователем</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="AgentInvoiceId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор агентского счёта. Заполняется тогда, когда осуществляется оплата агентом</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PaymentId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор подтверждающего документа, например квитанции А7.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PaymentDocumentId" type="cmn:ObjIdType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Идентификатор экземпляра документа, подтверждающего оплату
+
+Type=PAYMENTDOCUMENT</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="PaymentDocuments" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Платёжные документы</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PaymentDocument" type="pay:PaymentDocumentType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Платёжный документ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="MatchingDocumentType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания информации о сопоставлении документов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MatchingId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор операции сопоставления
+
+Type=MATCHING</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BaseDocumentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор исходного документа (документа-сонование)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatchingSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма операции сопоставления</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurrencyCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код валюты сопоставления (USD, EUR,RUB и т.п.). Это или валюта счёта или валюта платёжных документов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatchingSumRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма операции сопоставления в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время операции сопоставления</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MatchedDocument">
+				<xs:annotation>
+					<xs:documentation>Документ, участвующий в операции сопоставления</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="PaymentDocument" type="pay:PaymentDocumentType">
+							<xs:annotation>
+								<xs:documentation>Платёжный документ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PaymentNdflDocument" type="pay:PaymentNdflDocumentType">
+							<xs:annotation>
+								<xs:documentation>Платёжный документ перечисления НДФЛ</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="InvoiceAccountType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания реквизитов получателя</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BankBranchId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор отделения банка, в котором открыт счет
+
+Type = BANKBRANCH</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование банка</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentAccount" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Расчётный счёт получаетля</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CorrespondentAccount" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Корреспондентский счет банка</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INN" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>ИНН банка</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KPP" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>КПП банка</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CardNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер карты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MatchingDocument">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи операции сопоставления документов</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="pay:MatchingDocumentType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DocumentContent">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи содержимого документа</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="pay:DocumentContentType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="InvoiceContractType">
+		<xs:annotation>
+			<xs:documentation>Тип с информацией о договоре, на который выставлен счёт</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ContractId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор договора страхования
+
+Type = CONTRACT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckAgentInfoType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания контактной информации контрагентов чека</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Признак агента / признак агента по предмету расчёта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayingAgent" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты платежного агента</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Operation" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Операция платежного агента</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Phones" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Телефоны платежного агента</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Телефон платежного агента</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReceivePaymentsOperator" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты оператора по приему платежей</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Phones" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Телефоны оператора по приему платежей</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Телефон оператора по приему платежей</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MoneyTransferOperator" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты оператора перевода</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Phones" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Телефоны оператора по приему платежей</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Телефон оператора по приему платежей</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Name" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Наименование оператора перевода</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Address" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Адрес оператора перевода</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Inn" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>ИНН оператора перевода</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи информации о чеке</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentDocumentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра документа, подтверждающего оплату
+
+Type=PAYMENTDOCUMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvoiceId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор выставленного счёта в системе-источника
+
+Type=INVOICE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CheckRequest" type="pay:CheckRequestType">
+				<xs:annotation>
+					<xs:documentation>Данные для формирования чека</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CheckResponse" type="pay:CheckResponseType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Результат формирования чека, включая данные ОФД</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="1.0"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CheckRequestType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания атрибутов чека, поступающих в онлайн-кассу</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Timestamp" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время документа внешней системы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExternalId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор документа внешней системы
+
+Type=CHECK</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsBso" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак чек или БСО</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Receipt" type="pay:CheckReceiptType">
+					<xs:annotation>
+						<xs:documentation>Чек</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Correction" type="pay:CheckCorrectionType">
+					<xs:annotation>
+						<xs:documentation>Коррекция</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckResponseType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания атрибутов чека, поступющих из онлайн-кассы</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Uuid" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор.
+Максимальная длина строки – 128 символов. Если документ не удалось
+зарегистрировать, документу не будет
+присвоен UUID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Timestamp" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время документа внешней системы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CallbackUrl" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>URL, на который необходимо ответить
+после обработки документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Статус</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор группы ККТ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DaemonCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование сервера</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeviceCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код ККТ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExternalId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор документа внешней системы, уникальный среди всех документов, отправленных в данную группу ККТ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Error" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ErrorId" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Уникальный идентификатор ошибки</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Code" type="xs:integer">
+							<xs:annotation>
+								<xs:documentation>Код ошибки</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Text" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Текст ошибки</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Type" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Тип источника ошибки</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Payload" type="pay:CheckPayloadType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Реквизиты фискализации документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckPayloadType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания информации о атрибутах чека в ответет онлайн-кассы</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ShiftNumber" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Номер смены</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FiscalReceiptNumber" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Номер чека в смене</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReceiptDatetime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время документа из фискального накопителя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Total" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Итоговая сумма документа в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FnNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер ФН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EcrRegistrationNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Регистрационный номер ККТ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FiscalDocumentNumber" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Фискальный номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FiscalDocumentAttribute" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Фискальный признак документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FnsSite" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Адрес сайта ФНС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OfdInn" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>ИНН ОФД, через которого был зарегистрирован чек</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OfdReceiptUrl" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>URL для просмотра чека на сайте ОФД</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckReceiptType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания атрибутов чека прихода/расхода</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Operation">
+				<xs:annotation>
+					<xs:documentation>Тип операции</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="sell"/>
+						<xs:enumeration value="buy"/>
+						<xs:enumeration value="sell_refund"/>
+						<xs:enumeration value="buy_refund"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Client">
+				<xs:annotation>
+					<xs:documentation>Атрибуты клиента</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:sequence>
+							<xs:element name="Email" type="cmn:EmailType">
+								<xs:annotation>
+									<xs:documentation>Электронная почта покупателя</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Phone" type="cmn:PhoneType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Телефон покупателя</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:element name="Phone" type="cmn:PhoneType">
+							<xs:annotation>
+								<xs:documentation>Телефон покупателя</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Company">
+				<xs:annotation>
+					<xs:documentation>Атрибуты компании</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Email" type="cmn:EmailType">
+							<xs:annotation>
+								<xs:documentation>Электронная почта отправителячека</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Sno" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Системаналогообложения</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Inn" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>ИННорганизации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PaymentAddress" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Месторасчетов</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AgentInfo" type="pay:CheckAgentInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты агента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SupplierInfo" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты поставщика</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Phones" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Телефоныпоставщика</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Телефон поставщика</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Items">
+				<xs:annotation>
+					<xs:documentation>Позиции чека</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Item" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Позиция чека</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Name" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Наименование предмета расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Price" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Цена за единицу предмета расчета с учетом скидок и наценок</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Quantity" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Количество/вес предмета расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Sum" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Стоимость предмета расчета с учетом скидок и наценок</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="MeasurementUnit" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Единица измерения предмета расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="PaymentMethod" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Признак способа расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="PaymentObject" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Признак предмета расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Vat">
+										<xs:annotation>
+											<xs:documentation>Атрибуты налога на позицию</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Type" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Ставка НДС</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Sum" type="xs:decimal" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Сумма НДС за предмет расчета</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="AgentInfo" type="pay:CheckAgentInfoType" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Атрибуты агента</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="SupplierInfo" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Атрибуты поставщика</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Phones" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Телефоны поставщика</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Телефон поставщика</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="Name" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Наименование поставщика</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:maxLength value="256"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="Inn" type="xs:string" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>ИНН поставщика</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="UserData" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Дополнительный реквизит предмета расчета</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Payments">
+				<xs:annotation>
+					<xs:documentation>Оплаты</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Payment" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Оплата</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Type" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Вид оплаты</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Sum" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Сумма к оплате врублях</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Vats" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Атрибуты налогов на чек</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Vat" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Атрибут налога начек</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Type" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Ставка НДС</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Sum" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Сумма налога</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Total" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма расчета, указанного в чеке(БСО)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalCheckProps" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дополнительный реквизит чека</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cashier" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кассир</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalUserProps" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дополнительный реквизит пользователя</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Наименование дополнительного реквизита пользователя</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Value" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Значение дополнительного реквизита пользователя</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CheckCorrectionType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания атрибтов чека коррекции</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Operation" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Тип операции</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Company">
+				<xs:annotation>
+					<xs:documentation>Атрибуты компании</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Sno" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Система налогообложения</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Inn" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>ИНН организации</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PaymentAddress" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Место расчетов</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CorrectionInfo">
+				<xs:annotation>
+					<xs:documentation>Данные коррекции</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Type" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Тип коррекции</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="BaseDate" type="xs:date">
+							<xs:annotation>
+								<xs:documentation>Дата документа основания для коррекции</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="BaseNumber" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Номер документа основания для коррекции</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="BaseName" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Описание коррекции</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Payments">
+				<xs:annotation>
+					<xs:documentation>Оплаты</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Payment" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Оплата</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Type" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Вид оплаты</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Sum" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Сумма к оплате в рублях</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Vats">
+				<xs:annotation>
+					<xs:documentation>Атрибуты налогов на чек коррекции</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Vat" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Атрибут налога на чек коррекции</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Type" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Ставка НДС</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Sum" type="xs:decimal">
+										<xs:annotation>
+											<xs:documentation>Сумма налога</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cashier" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кассир</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Check">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи чека</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="pay:CheckType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ActualPayerType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи информации о фактическом плательщике</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PayerPersonTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа персоны плательщика
+
+SysId = XML;
+Type = PERSON_TYPE 
+Id: 
+1 - Физ.лицо
+2 - Юр.лицо
+3 - ИП</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerFullName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ФИО плательщика одной строкой, для ЮЛ - наименование организации</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerDocumentSeries" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа плательщика</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerDocumentNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер документа плательщика</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PayerInn" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН плательщика</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Адрес электранной почты, на который будет направлена чек</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phone" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Телефон, на которой будет отправлен чек</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumCash" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты наличными</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumCashless" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма оплаты безналичным методом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PaymentDocument">
+		<xs:annotation>
+			<xs:documentation>Платёжный документ (в виде отдельного сообщения используется для фискализации по ФЗ-54)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="pay:PaymentDocumentType">
+					<xs:attribute name="schemaVersion" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Номер версии схемы</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

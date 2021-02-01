@@ -1,0 +1,2851 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2019 rel. 3 sp1 (x64) (http://www.altova.com) by  (IC Rosgosstrakh, PJSC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cmn="http://rgs.ru/schema/common10" targetNamespace="http://rgs.ru/schema/common10" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.19">
+	<xs:complexType name="AccountListType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка счетов контакта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Account" type="cmn:AccountType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Счет</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccountType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания счета контакта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AccountId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор счёта в системе-источнике
+
+Type=ACCOUNT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankBranchId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор отделения банка, в котором открыт счет (БИК)
+
+Type = BANKBRANCH</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankInn" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ИНН банка, в котором открыт счёт</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccountTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа банковского счета
+
+Id
+1 - Расчетный
+2 - Карточный
+3 - Депозитный
+4 - Корреспондентский
+5 - Лицевой счет
+6 - Прочее
+
+SysId = XML
+
+Type = D_BANK_ACCOUNT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccountNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CardNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер карты или лицевого счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccountCurName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код валюты счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OpenDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата открытия счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpireDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата окончания срока действия счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HolderName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Имя владельца счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор статуса счета
+
+Type=  D_ACCOUNT_STATUS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DefaultUse" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "использовать по умолчанию"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressCodesType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка кодов адреса (КЛАДР, ФИАС итд)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AddressCode" type="cmn:AddressCodeType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Код адреса из справочника (КЛАДР, ФИАС итд)
+
+
+Type= ADDRESS_CODE
+
+для КЛАДР - SysId=KLADR
+для ФИАС - SysId=FIAS
+для ОКАТО - SysId=OKATO</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressCodeType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания одного кода адреса (КЛАДР, ФИАС итд)
+
+Type= ADDRESS_CODE
+
+для КЛАДР - SysId=KLADR
+для ФИАС - SysId=FIAS</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmn:ObjIdType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AddressMessageType">
+		<xs:sequence>
+			<xs:element name="TechData" type="cmn:TechnicalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Техническая составляющая сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BusinessData">
+				<xs:annotation>
+					<xs:documentation>Бизнес-данные</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Address" type="cmn:AddressType">
+							<xs:annotation>
+								<xs:documentation>Адрес</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер версии схемы</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="AddressElement">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи адреса без привязки к чему-либо</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cmn:AddressType">
+					<xs:attribute name="schemaVersion" use="required">
+						<xs:annotation>
+							<xs:documentation>Номер версии схемы</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string"/>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AddressesType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка адресов </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Address" type="cmn:AddressType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Адрес</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания адреса</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CountryCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Цифровой код «Страны» ОКСМ.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AddressTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа адреса. СКК 4.1.7
+
+SysId=SCC2
+Type = ADDR_TYPE_OK</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Index" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Почтовый индекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Subject" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Субъект РФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegionArea" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Федеральный округ(регион), например "Дальневосточный"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="District" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Район</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="City" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Город</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Town" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Населенный пункт</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Street" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Улица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="House" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер дома</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Building" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер корпуса/строения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Appartment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер квартиры/офиса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AddInfo" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Постфикс, неструктурированная часть адреса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AddressCodes" type="cmn:AddressCodesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Коды адреса вплоть до улицы из специализированных справочников (КЛАДР, ФИАС).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StreetCodes" type="cmn:AddressCodesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Коды улицы из специализированных справочников (КЛАДР, ФИАС).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FullAddress" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Полный адрес одной строкой</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DefaultUse" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "использовать по умолчанию"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Latitude" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Широта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Longitude" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Долгота</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseBrokerListType">
+		<xs:annotation>
+			<xs:documentation>Тип: Список посредников</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Broker" type="cmn:BaseBrokerType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Посредник</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseBrokerType">
+		<xs:annotation>
+			<xs:documentation>Тип: Запись посредник</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PersonId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ссылка на контрагента, являющегося посредником по договору. Если отсутствует, значит система-приёмник должна искать агента по его коду
+
+Type=PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код агента, например ЛНР</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Quota" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Доля от общего вознаграждения в рамках договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CalcLead" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ведет расчеты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BrokerListRole" type="cmn:BrokerRoleListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список ролей посредника</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MicroSegmentList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список микросегментов</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MicroSegment" type="cmn:MicroSegmentType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RewardPercent" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ожидаемый посредником процент вознаграждения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RewardValue" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Значение вознаграждения агента. Данные в этом теге приведены справочно и исользуются для сравнения ожидаемого агентом вознаграждения и реально начисленным в третьей системе</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MicroSegmentType">
+		<xs:annotation>
+			<xs:documentation>Тип: Информация о микросегменте</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MicroSegmentId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор микросегмента. СКК 7.7.95
+
+SysId=SCC2
+Type=D_MICROSEGMENT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAgentProtected" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что агент (его КВ) является защищённым. Отсутствие тега=false</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseCoefficientType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания одного тарифного коэффициента</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CoefficientCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код тарифного коэффициента (из справочника коэффициентов). СКК 7.1.5</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoefficientTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа коэффициента.
+
+Ids:
+1-Суммовой (в значении коэффициента указывается конкретное значение в валюте покрытия), например 1500 (рублей)
+2-Процентный (в значении коэффициента будут указаны проценты)
+3-Коэффициент (конкретное значение коэффициента в долях)
+SysId=XML
+Type=D_COEFFTYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoefficientValue" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Значение тарифного коэффициента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoverId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра страхового покрытия, к которому относится данный коэффициент
+
+Type=COVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseCoverType">
+		<xs:annotation>
+			<xs:documentation>Базовый тип данных для описания страхового покрытия</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CoverId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра страхового покрытия в системе
+
+Type=COVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainCoverId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общий для всех версий договора идентификатор покрытия
+
+Type=COVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsuredObjectId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ссылка на объект страхования, к которому относится данное покрытие.
+Если тег отсутствует, то покрытие относится к договору, а не к объекту страхования.
+
+Type = INSUREDOBJECT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoverTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа страхового покрытия
+
+SysID = SCC2
+Type 
+для АРМ
+DICTRISKOBJECTTYPE_22
+для ЕКИС
+S_RISKS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата начала действия покрытия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата окончания действия покрытия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProgramId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор программы страхования.
+Имеются продукты, у которых прогрмамма указываться именно на уровне покрытия, а не объекте страхования. например, ВЗР.
+
+Type=D_INSPROG</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Страховая сумма, устанавливаемая для данного покрытия в валюте договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsSum" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Страховая сумма по покрытию предыдущей версии в валюте     договора. 
+Алгоритм заполнения аналогичен алгоритму заполнения общей суммы по договору.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsPrem" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Страховая премия для данного покрытия в валюте договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsPrem" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Страховая премия по покрытию предыдущей версии в валюте     договора. 
+Алгоритм заполнения аналогичен алгоритму заполнения общей премии по договору.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsuranceSumRUB" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Страховая сумма по покрытию в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsuranceSumRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Страховая сумма по покрытию предыдущей версии в рублях. 
+Алгоритм заполнения аналогичен алгоритму заполнения общей суммы по договору в рублях.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsurancePremiumRUB" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Страховая премия по покрытию в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsurancePremiumRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Страховая премия по покрытию предыдущей версии в рублях. 
+Алгоритм заполнения аналогичен алгоритму заполнения общей премии по договору в рублях.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FranchiseType" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип франшизы.
+СКК - 4.2.34
+
+SysId=SCC2
+Type=T_FRANSHIZA</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FranchiseValueType" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип значения франшизы.
+СКК - 4.2.35
+
+SysId=SCC2
+Type=ED_IZM_FRANSHIZA</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FranchiseValue" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Значение франшизы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoverPropertyList" type="cmn:PropertyListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список дополнительных атрибутов покрытия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code7GS" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>код 7ГС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeGVS" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код группы видов страхования </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeUGS" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код учётной группы срахования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeUVS" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код учётного вида страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseDriverType">
+		<xs:annotation>
+			<xs:documentation>Тип: данные допущенного к управлению</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DriverId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра водителя в системе
+
+Type=DRIVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Person" type="cmn:PersonType">
+				<xs:annotation>
+					<xs:documentation>Водитель</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Age" type="xs:short">
+				<xs:annotation>
+					<xs:documentation>Возраст водителя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Experience" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата начала стажа управления ТС Водителем</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseBeneficiariesType">
+		<xs:annotation>
+			<xs:documentation>Тип: Список выгодоприобретателей по договору страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Beneficiary" type="cmn:BaseBeneficiaryType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Выгодоприобретатель по договору страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseBeneficiaryType">
+		<xs:annotation>
+			<xs:documentation>Тип: Выгодоприобретатель по договору страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PersonId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Ссылка на персону выгодоприобретателя
+
+Type=PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Share" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Доля выгодоприобретателя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsBank" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что данный выгодоприобретатель является банком</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BasePreviousPolicyType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания предыдущего договора страхования (страхового полиса)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Series" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия предыдущего договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер предыдущего договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PreviousInsCompany" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование страховщика по предыдущему договору страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BsoInfoType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка бланков БСО по договору страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Bso" type="cmn:BsoType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Бланк БСО </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BsoType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания бланка БСО</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BsoTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Тип бланка БСО
+
+Type = BSO_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BsoSeries" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия бланка БСО</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BsoNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер бланка БСО</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CarCodesType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка кодов ТС в различных справочниках (РСА, НАМИ, итд)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CarCode" type="cmn:ObjIdType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Идентификатор кода ТС из автомобильного справочника
+
+Type = CARCATALOG
+
+Для идентификатора марки/модели ТС из справочника РСА - SysId = RSA
+
+Для идентификации марки/модели ТС из справочника Трансдекры (СКК 5.1.32) -  SysId = TRANSDEKRA
+
+Id является конечным элементом в иерархии марка-модель-модификация</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VehicleType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания ТС</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа ТС. СКК 5.1.1
+
+Type=CARRIER_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CarCategoryId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор категории ТС. СКК 5.1.2
+
+Type=CARRIER_CATEGORIES</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CarCodes" type="cmn:CarCodesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Коды марки, модели, модификации итд ТС в различных справочниках</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MarkNamePts" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование марки ТС по ПТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ModelNamePts" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование модели ТС по ПТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearIssue" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Год выпуска ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevDocuments" type="cmn:DocumentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предыдущие документы ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Documents" type="cmn:DocumentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список документов на ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vin" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер VIN ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Pin" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификационый номер ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LicensePlate" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Гос.номер ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BodyNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер кузова ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChassisNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер шасси ТС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EngineNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер двигателя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EngCapHp" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Мощность транспортного средства в лошадиных силах</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EngCapW" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Мощность транспортного средства в кВт</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EngineVolume" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Объем двигателя в см3</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxMass" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Разрешенная максимальная масса транспортного средства. При передаче договора из фронт-системы в бэк-систему не заполняется</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PasQuant" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Количество пассажиров</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Color" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Цвет кузова ТС </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RightWheel" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак расположения рулевого колеса справа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AutoStart" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак наличия системы автозапуска</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContractHeaderType">
+		<xs:annotation>
+			<xs:documentation>Тип: основаная информация по договору/ДС страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ContractId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Если передаётся договор, то тут передавать его идентификатор в системе-источнике.
+Если передаётся дополнительное соглашение - идентификатор дополнительного соглашения.
+Если передаётся техническая корректировка, то тут должен быть указан идентификатор договора или дополнительного соглашения, для которго выполняется техническая корректировка
+
+Type=CONTRACT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractVersionNumber" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер версии договора.
+Для договора=1, для первого ДС=2, для второго ДС=3 и т.д.
+При передаче технической корректировки указывать ту версию, для которой передаётся тех.корректировка</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainContractId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор первичного договора в системе-источнике.
+Для договора передавать значение из ContractId. Для дополнительных соглашений передавать идентификатор  договора.
+
+Type=CONTRACT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainContractSignDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Данный тег должен выгружаться только для дополнительных соглашений (включая технические корректировки дополнительных соглашений). 
+Дата подписания первоначального договора страхования.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainContractStartDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Данный тег должен выгружаться только для дополнительных соглашений (включая технические корректировки дополнительных соглашений). 
+Дата начала действия договора страхования. Если значение данного тега отличается от Даты начала действия договора в системе-приёмнике, значит было создано дополнительное соглашение, меняющее дату начала действия договора страхования.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProductId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор Страхового продукта.
+В терминах GW это Offering, для остальных систем это продукт
+
+Type = PRODUCT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EntityTypeId" type="cmn:EntityTypeId">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа  сущности объекта (определяет бизнес-процесс)
+
+1 - Создание договора
+2 - техническая корректировка договороа/ДС
+3 - создание ДС
+4 - ДС на расторжение
+5 - ДС на аннулирование
+6 - удаление (отзыв) договора/ДС
+
+SysId = XML
+Type = ENTITY_TYPE </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OperationStatusId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор статуса операции. Отсутствие тега расматривать как "Подтверждена".
+
+Ids:
+1-Подтверждена
+2-Не подтверждена
+
+SysId=XML
+Type=OPERSTATUS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractFeatureId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор признака договора. СКК 7.2.40
+
+Type=DICTCONTRACTOPTION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupContract" type="cmn:GroupContractType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о групповом/коллективном договоре, к которому относится передаваемый догоовор (дополнительное соглашение к договору)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BranchCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код подразделения, в котором совершена операция</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Series" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для договора - серия договора страхования.
+Для дополнительного соглашения - серия дополнительного соглашения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Для договора - номер договора страхования.
+Для дополнительного соглашения - номер дополнительного соглашения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SignDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата подписания договора страхования или дополнительного соглашения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата начала действия версии договора страхования  или дополнительного соглашения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата окончания действия договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LiabilityStartDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время начала ответственности по договору/дополнительному соглашению</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LiabilityEndDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время окончания ответственности по договору/дополнительному соглашению</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PreviousContract" type="cmn:BasePreviousPolicyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация о предыдущем договоре страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ApplicationDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время  заявления на заключение/расторжение/аннулирование и т.п. договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationReasonId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор причины расторжения/аннулирования договора
+
+Type=D_TERM_REASON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата расторжения/аннулирования договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdjustmentReasons" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Причины корректировки договора или дополнительного соглашения (идентификаторы)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AdjustmentReasonId" type="cmn:ObjIdType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Идентификатор причины корректировки договора или дополнительного соглашения. СКК 7.1.97
+
+Type=ADJUSTMENTREASON</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractStateSecret" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак того, что договор относится к гос.тайне. Если данной информации нет, то передавать false</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsurerId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Ссылка на идентификатор контрагента, который является страхователем по договору
+
+Type=PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SaleChannelId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор канала продаж. СКК 7.4.11
+В Id передавать КОД канала продаж из справочника
+
+SysId=SCC2
+Type=DICTSALECHANNELTYPE200</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Brokers" type="cmn:BaseBrokerListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список посредников по договору</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentScheduleTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип графика оплат (Единовременно, 2 платежа в год и т.п.).
+СКК 7.10.13
+
+SysId=SCC2
+Type=CPAY_DCTSCHEDULETYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdvertiveChannelName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование канала привлечения. Например, реклама на радио.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ArchivRef" type="cmn:ArchiveRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ссылки на документы электронного архива</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractStatus" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор статуса договора страхования
+СКК 7.3.17
+
+SysId=SCC2
+Type=DICTPOLICYSTATUS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Текст комментария к договору страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsurancePremiumFull" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Общая премия по версии договора в валюте договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsurancePremiumFull" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая премия предыдущей версии договора. 
+Если передаётся техническая корректировка, то в этом теге передаётся полная страховая премия договора/ДС.
+Если передаётся ДС, то необходимо передавать данные последней технической корректирови, если она была, либо данные договора/последнего ДС, если технической корретировки не было</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsurancePremiumFullRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая премия по версии договора в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsurancePremiumFullRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая премия предыдущей версии договора в рублях. 
+Если передаётся техническая корректировка, то в этом теге передаётся полная страховая премия договора/ДС в рублях.
+Если передаётся ДС, то необходимо передавать данные последней технической корректирови, если она была, либо данные договора/последнего ДС, если технической корретировки не было</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsuranceSumFull" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая сумма по версии договора в валюте договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsuranceSumFull" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая сумма предыдущей версии договора. 
+Если передаётся техническая корректировка, то в этом теге передаётся полная страховая сумма договора/ДС.
+Если передаётся ДС, то необходимо передавать данные последней технической корректирови, если она была, либо данные договора/последнего ДС, если технической корретировки не было</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InsuranceSumFullRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая сумма по версии договора в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevInsuranceSumFullRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая страховая сумма предыдущей версии договора в рублях. 
+Если передаётся техническая корректировка, то в этом теге передаётся полная страховая сумма договора/ДС в рублях.
+Если передаётся ДС, то необходимо передавать данные последней технической корректирови, если она была, либо данные договора/последнего ДС, если технической корретировки не было</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PremiumAccrualDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата начисления премии для расчёта КВ Агенту</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор проекта договора страхования
+
+Type=PROJECT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProgramId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор программы страхования.
+Так же программа страхования может быть на объекта страхования и на конкретных покрытиях объекта страхования
+
+Type=D_INSPROG</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RevisionDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время внесения информации (вставка, корретировка и т.п.) в систему</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IssueDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время выдачи бланка договора страхователю</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CuratorCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код (ЛНР) куратора договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Discounts" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Информация об акциях и скидках, применённых к договору</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Discount" type="cmn:DiscountType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Информация о применённой акции/скидке</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegionCalcId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор региона, в котором произведён расчёт. СКК 7.2.8
+
+Type=D_CALCTERRITORY</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ApplicationTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип приложения (веб, мобильное, декстопное и т.п.) через которое был выпущен договор. СКК 6.1.45
+
+Type=D_APPTYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CurrencyType">
+		<xs:annotation>
+			<xs:documentation>Комплексный тип данных для описания тэгов с валютой</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CurName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код валюты. Например, USD, EUR, RUB</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurRate" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Курс валюты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата курса валюты. Для фиксированного курса может отсутствовать</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsFixRate" type="xs:boolean" default="true" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что переданный курс является фиксированным (может быть не по крсу ЦБ на указанную дату). Если не передаётся, обрабатывать как true</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentsType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка документов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Document" type="cmn:DocumentType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Документ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания одного документа</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DocTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа документа для сущностей:
+1) ФЛ, ЮЛ, ИП (использовать Type = DOCUMENT_TYPE);
+2) ТС (использовать Type = VEHDOC_TYPE);
+3) ТО ТС (использовать Type = D_TECHDOC);
+4) Право использования ТС (Type=D_AUTOUSAGERIGHT)
+___________
+DOCUMENT_TYPE
+Ids:
+1 Свидетельство о рождении РФ
+2 Удостоверение личности офицера РФ
+3 Справка об освобождении из места лишения свободы РФ
+4 Паспорт Минморфлота
+5 Военный билет солдата (матроса, сержанта, старшины) РФ
+6 Дипломатический паспорт гражданина РФ
+7 Иностранный паспорт
+8 Свидетельство о регистрации ходатайства иммигранта о признании его беженцем
+9 Вид на жительство
+10 Удостоверение беженца в РФ
+11 Временное удостоверение личности гражданина РФ
+12 Паспорт гражданина РФ
+13 Загранпаспорт гражданина РФ
+14 Свидетельство о рождении, выданное уполномоченным органом иностранного государства
+15 Паспорт моряка
+16 Военный билет офицера запаса РФ
+17 Иные документы, выдаваемые органами МВД России
+18 Паспорт гражданина СССР
+19 Загранпаспорт гражданина СССР
+20 Водительское удостоверение РФ
+21 Свидетельство о смерти
+22 Водительское удостоверение иностранного государства
+23 Другой документ
+24 Лицензия
+25 Миграционная карта
+26 Свидетельство о регистрации в качестве индивидуального предпринимателя
+27 Свидетельство о предоставлении временного убежища на территории Российской Федерации
+28 Удостоверение личности военнослужащего Российской Федерации
+29 Паспорт гражданина Украины
+30 Разрешение на временное проживание в Российской Федерации
+31 Временное удостоверение, выданное взамен военного билета
+32 Выписка из единого государственного реестра индивидуальных предпринимателей (ЕГРИП)
+33 Лист записи ЕГРИП о регистрации ИП
+34 Удостоверение тракториста-машиниста
+35 Удостоверение тракториста-машиниста старого образца
+36 Миграционная карта
+37 Свидетельство о внесении записи в Единый гос. реестр
+38 Лист записи ЕГРЮЛ о регистрации ЮЛ
+39 Информационное письмо Росстата о включении организации в состав ЕГРПО 
+40 Свидетельство о государственной регистрации
+41 Выписка из единого государственного реестра юридических лиц (ЕГРЮЛ)
+42 ИНН
+43 КПП
+44 СНИЛС
+45 ОГРН
+46 ОГРНИП
+47 Временное удостоверение на право управления самоходными машинами
+48 Временное разрешение на право управления самоходными машинами
+
+SysId = XML
+_____________
+VEHDOC_TYPE
+СКК 5.1.11
+SysId=SCC2
+_____________
+D_TECHDOC
+СКК 5.1.23
+SysId=SCC2
+_____________
+D_AUTOUSAGERIGHT
+СКК 5.1.20
+SysId=SCC2</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocSeries" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocIssuedBy" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Место выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocIssuedByCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код подразделения места выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocIssueDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата выдачи документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocExpireDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата окончания  документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocValid" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "действующий документ"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsDuplicate" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что документ является дубликатом. Например, если предоставлен дубликат ПТС, то тип документа будет ПТС, а данный флаг true.
+Отсутвие тега приравнивать к false (не дубликат)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationCountry" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код страны по ОКСМ, в который был выдан документ.
+Если тег отсутствует, что обрабатывать код как 643 - Россия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsMain" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что документа является основным. Используется для передачи в Союзы. Логика заполнения определяется для каждой системы-источника в отдельности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EmailsType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка адресов электронной почты</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Email" type="cmn:EmailType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Адрес электронной почты.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EmailType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания адреса электронной почты.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EmailTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа адреса электронной почты.
+Id:
+1 - Личный 
+2 - Рабочий
+
+SysId = XML;
+Type = EMAIL_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmailAddress" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Строка адреса электронной почты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UseForAdvertisement" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "использовать для рассылки рекламы"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsConfirmed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что адрес электронной почты подтверждён. Если тег отсутствует, то можно считать не подтверждённым</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описание назначения адреса электронной почты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EntityTypeId">
+		<xs:annotation>
+			<xs:documentation>Идентификатор типа  сущности объекта (определяет бизнес-процесс)
+
+1 - Создание сущности
+2 - техническая корректировка сущности
+3 - Бизнес-корректировка сущности
+4 - Расторжение сущности
+5 - Аннулирование сущности
+6 - Удаление сущности
+
+SysId = XML
+Type = ENTITY_TYPE </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cmn:ObjIdType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ErrorListType">
+		<xs:annotation>
+			<xs:documentation>Список ошибок</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErrorInfo" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Список ошибок</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ErrorType">
+							<xs:annotation>
+								<xs:documentation>Тип ошибки. ERROR - ошибка - в процессе выполнения операции произошла критическая ошибка, операция не выполнена, WARNING - предупреждение - в процессе выполнения операции произошла не критичная ошибка, операция выполнена</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="TRACE"/>
+									<xs:enumeration value="DEBUG"/>
+									<xs:enumeration value="ERROR"/>
+									<xs:enumeration value="WARNING"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="ErrorCode" type="xs:integer">
+							<xs:annotation>
+								<xs:documentation>Код ошибки</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ErrorMessage" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Сообщение об ошибке</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExportInfoType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания информации о выгрузке</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SysId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Идентификатор источника  данных</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExportDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время выгрузки данных</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExportId" type="xs:unsignedLong" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор выгрузки,  уникальное возрастающее значение, может содержать «дырки», то есть 1,2,4,5,10,11 итд.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupContractType">
+		<xs:annotation>
+			<xs:documentation>Тип: Групповой/коллективный договор</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GroupContractId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор группового договора страхования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupContractSeries" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Серия группового/коллективного договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupContractNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер группового/коллективного договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupContractStartDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата начала действия группового/коллективного договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MetaInfoType">
+		<xs:annotation>
+			<xs:documentation>Описательный идентификатор экземпляра объекта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Info" nillable="true" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Значение атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" type="xs:string" use="required">
+								<xs:annotation>
+									<xs:documentation>Наименование атрибута</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="ref-type" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Тип атрибута ссылки на объект</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MoneyType">
+		<xs:annotation>
+			<xs:documentation>Тип: денежный формат</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма в указанной валюте</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjIdType">
+		<xs:annotation>
+			<xs:documentation>Комплексный идентификатор сущности</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра объекта в системе</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SysId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Идентификатор системы (подробности смотреть в документации по интеграции с корпоративной шиной данных)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Тип объекта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaInfo" type="cmn:MetaInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описательный идентификатор экземпляра объекта, состоящий из ключевых атрибутов объекта, позволяющих логически идентифицировать объект</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentScheduleListType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка элементов графика платежей по договору страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentSchedule" type="cmn:PaymentScheduleType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Элемент графика платежей по договору</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentScheduleType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания одного элемента графика оплаты страховой премии по договору</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentSchedulleId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор строки плана-графика договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта платежа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumRUB" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DaysLimit" type="xs:unsignedShort" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Лимит дней</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentDeadLineDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Крайний срок оплаты платежа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий к платежу</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Covers" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификаторы покрытий, которые запланированы к оплате данной строкой графика платежей</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cover" type="cmn:PaymentScheduleCoverType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonMessageType">
+		<xs:sequence>
+			<xs:element name="TechData" type="cmn:TechnicalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Техническая составляющая сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BusinessData">
+				<xs:annotation>
+					<xs:documentation>Бизнес-данные</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Person" type="cmn:PersonType">
+							<xs:annotation>
+								<xs:documentation>Контрагент</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер версии схемы</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="PersonElement" type="cmn:PersonMessageType">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи контрагента без привязки к чему-либо</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="PersonType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания контакта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PersonId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор персоны
+
+Type=PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Гражданство. Цифровой код «Страны» ОКСМ. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PersonTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа персоны
+
+SysId = XML;
+Type = PERSON_TYPE 
+Id: 
+1 - Физ.лицо
+2 - Юр.лицо
+3 - ИП</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstNameRus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Имя на русском языке, для юр.лица - Наименование юридического лица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevFirstNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предыдущее имя или название организации русском языке</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Фамилия на русском языке, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevLastNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предыдущая фамилия на русском языке, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MiddleNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Отчество на русском языке, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevMiddleNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предыдущее отчество на русском языке, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortNameRus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Фамилия и инициалы на русском языке, для юр.лица - краткое наименование юридического лица </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstNameLat" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Имя на латинице, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastNameLat" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Фамилия на латинице, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MiddleNameLat" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - отчество на латинице, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortNameLat" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - Фамилия и инициалы на латинице, для юр.лица - краткое наименование юридического лица на латинице</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Birthday" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - дата рождения, для юр.лица - не заполняется </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BirthPlace" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для Физ.лица или ИП - Место рождения; для юр.лица - не заполняется.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Gender" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП - пол, для юр.лица - не заполняется 
+
+M (английское) - Мужской
+F (английское) - Женское</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="M"/>
+						<xs:enumeration value="F"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IsResident" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак, является ли контакт -резидентом РФ или нет</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SignerName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП -не заполняется, для юр.лица - ФИО подписанта </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrganizationForm" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Для физ.лица или ИП -не заполняется, для юр.лица - организационная форма
+
+SysId=SCC2
+Type = OKOPF_BASE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PersonImportance" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Важность клиента
+
+Ids;
+1-VIP
+2-Лицо, принимающее решения
+3-Обычный
+
+SysId=XML
+Type=D_IMPORTANCE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phones" type="cmn:PhonesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Групповой тэг с телефонами контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrevDocuments" type="cmn:DocumentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Предыдущие документы контрагента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Documents" type="cmn:DocumentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Групповой тэг с документами контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Emails" type="cmn:EmailsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Групповой тэг с адресами электронной почты контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Addresses" type="cmn:AddressesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Групповой тэг с адресами контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccountList" type="cmn:AccountListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Групповой тэг со списком счетов контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RoleList" type="cmn:RoleListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список социальных ролей и связей контакта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий к контакту</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Questionary" type="cmn:QuestionaryType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Анкета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsPublic" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак того, что лицо является публичным</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsPublicRelative" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак того, что лицо является родственником публичного лица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PropertyList" type="cmn:PropertyListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список нетипизированных атрибутов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PhonesType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка телефонов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Phone" type="cmn:PhoneType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Телефон</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PhoneType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания одного телефона.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа Телефона
+Id:
+1 - Личный телефон
+2 - Рабочий телефон
+3 - Домашний телефон
+4 - Мобильный
+5 - Факс
+6 - Телефон организации
+7 - Телефон выделенной линии
+8 - Региональный телефон
+
+SysId = XML;
+Type =PHONE_TYPE  </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FullNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер телефона (не форматированная строка, содержащая номер телефона в том виде,как он был введен)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код страны</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Prefix" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Префикс телефона</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер телефона</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ext" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Добавочный номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UseForAdvertisement" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "использовать для рассылки рекламы"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsConfirmed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак того, что номер телефона подтверждён. Если тег отсуствует, номер можно считать не подтверждённым</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описание назначения телефона</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuestionaryType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания анкеты</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MaritalStatus" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Семейное положение
+Id
+1 - Холост/Не замужем
+2 - Разведен(-а)
+3 - Женат/Замужем
+4 - Вдовец/Вдова
+5 - не определен
+
+SysId = XML
+
+Type = MARITAL_STATUS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Profession" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Профессия</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WorkPlace" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Место работы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Position" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Должность</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Education" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Образование
+
+Id
+1 - Среднее, в том числе специальное
+2 - Неполное высшее
+3 - Высшее
+4 - Два и более высших
+5 - Ученая степень
+
+SysId = XML 
+
+Type = EDUCATION_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChildrenNumber" type="xs:short" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Количество детей</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hobby" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Хобби
+
+Type=HOBBY_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Smoking" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак "Является ли курильщиком"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EconomicsSectorId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор сектора экономики
+
+Type = D_ECONOM_SECTOR</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KindOfBusinessId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор отрасли деятельности
+
+Type = D_BUSINESS_KIND</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainActivityCategoryId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор основного вида деятельности
+
+Type = D_ACTIVITY_CAT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MainActivityCategoryDescription" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описание основного вида деятельности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Turnover" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Оборот</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TurnoverYear" type="xs:short" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Год оборота</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TurnoverCurName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Валюта оборота</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialRating" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Финансовый рейтинг</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата окончания деятельности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuthorizedCapital" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>размер уставного капитала</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuthorizedCapitalCurName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Валюта уставного капитала</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EmployeesNumber" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Число сотрудников</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RefundListType">
+		<xs:annotation>
+			<xs:documentation>Тип: информация о возвратах премии в доп.соглашении к договору страхования</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RefundReasonId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор справочника причин возврата
+СКК 7.10.18
+
+SysId=SCC2
+Type=REPAYMENT_REASON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RefundTotalSum" type="cmn:MoneyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Общая сумма возврата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Refunds" type="cmn:RefundsType">
+				<xs:annotation>
+					<xs:documentation>список объектов и рисков, по которому осуществляются возвраты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RefundsType">
+		<xs:annotation>
+			<xs:documentation>Тип: список объектов и рисков, по которому осуществляются возвраты</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Refund" type="cmn:RefundType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Возврат</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RefundType">
+		<xs:annotation>
+			<xs:documentation>Тип: возврат</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CoverId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор покрытия, по которому осуществляется возврат
+
+Type=COVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoverTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа страхового покрытия
+
+SysID = SCC2
+Type = DICTRISKOBJECTTYPE_22</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RefundSum" type="cmn:MoneyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма возврата в валюте договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RequestDeleteItemType">
+		<xs:sequence>
+			<xs:element name="TechData" type="cmn:TechnicalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Техническая составляющая сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BusinessData">
+				<xs:annotation>
+					<xs:documentation>Бизнес-данные</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DeleteItem" type="cmn:ObjIdType">
+							<xs:annotation>
+								<xs:documentation>Сущность, которую нужно удалить</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер версии схемы</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="RequestDeleteItem" type="cmn:RequestDeleteItemType">
+		<xs:annotation>
+			<xs:documentation>Удаление информации</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="RoleListType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания списка соцаильных ролей контакта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" type="cmn:RoleType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Роль</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleType">
+		<xs:annotation>
+			<xs:documentation>Тип данных для описания роли контакта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RoleId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор роли, например, отец, мать и т.п.
+
+Type=CONTR_PERS_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PersonId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор контакта, связанного с ролью
+
+Type=PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RelataionTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа связи
+
+Type = RELATION_TYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Текст комментария</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelationType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи зависимостей между сущностями</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParentObjTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор основной сущности.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChildObjTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор связываемой сущности</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RelationTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа связи
+
+Type = RELATION_TYPE
+SysId=XML
+Id:
+1 - Связь Агент->МАГ
+2 - Связь МАГ->НСО
+3 - Связь ТД->СКК</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата начала действия привязки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата окончания дейтсвия привязки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Relation">
+		<xs:annotation>
+			<xs:documentation>Создание и изменение определённой зависимости между сущностями</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cmn:RelationType">
+					<xs:attribute name="schemaVersion" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Номер версии схемы</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ArchiveRefType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи ссылки на документ архива (электронного, файлового и т.п.)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="File" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FileId" type="cmn:ObjIdType">
+							<xs:annotation>
+								<xs:documentation>Идентификатор файла системы, в которой хранится документ
+
+SysId:
+Кассандра - FILESTORE
+ТЕССА - TESSA
+либо код системы-источника
+Type=FILE</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="GroupFileId" type="cmn:ObjIdType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Идентификатор группы файлов. Используется в том случае, если 1 файл физически разделён на несколько. В этом случае этот идентификатор будет общим для всей группы</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="FileNumber" type="xs:integer" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Номер файла в группе, используется для того, чтобы в верной последовательности слить файлы в один</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="URL" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Ссылка на документ. Обязательно должен быть заполнен, если отсутствует тег FileBody</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="FileName" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Имя файла документа</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="FileType" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Тип файла: pdf, doc, docx,jpg,png и т.п.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DocumentName" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Имя документа</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="FileBody" type="xs:base64Binary" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Содержимое файла в base64. Обязательно должен присутствовать, если тег URL отсутствует либо пустой</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MapType">
+		<xs:annotation>
+			<xs:documentation>Структура ключ-значение</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ключ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Значение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PropertyListType">
+		<xs:annotation>
+			<xs:documentation>Дополнительные параметры сущности</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Property" type="cmn:MapType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Описание сущности ключ-значение</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceListType">
+		<xs:annotation>
+			<xs:documentation>Список выстлавенных счетов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Invoice" type="cmn:InvoiceType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Выставленный счёт</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceType">
+		<xs:annotation>
+			<xs:documentation>Выставленный счёт</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InvoiceId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор выставленного счёта в системе-источника
+
+Type=INVOICE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BranchCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код СКК низового подразделения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentMethodId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор метода оплаты. Справочник в СКК 7.10.22
+
+SysId=SCC2
+Type=PAYMENT_OPTION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата выставления документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Currency" type="cmn:CurrencyType">
+				<xs:annotation>
+					<xs:documentation>Валюта договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа в валюте оплаты</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSumRUB" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа в рублях</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentPurpose" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Назначение платежа. Планируется, что это значение будет передано в платеже.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvoiceProperties" type="cmn:PropertyListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дополнительные атрибуты счёта</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseCoverListType">
+		<xs:annotation>
+			<xs:documentation>Список описания базовых покрытий</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Cover" type="cmn:BaseCoverType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BaseCoefficientListType">
+		<xs:annotation>
+			<xs:documentation>Список коэффициентов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Coefficient" type="cmn:BaseCoefficientType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Коэффициент</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BrokerRoleListType">
+		<xs:annotation>
+			<xs:documentation>Тип со списком ролей посредника (привёл клиента, заключил договор и т.п.)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BrokerRole" type="cmn:BrokerRoleType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Роль посредника</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BrokerRoleType">
+		<xs:annotation>
+			<xs:documentation>Тип для описание одной роли посредника</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RoleId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор роли посредника по отношению к договору страхования
+
+Type= D_BROKERROLE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BoxContractType">
+		<xs:annotation>
+			<xs:documentation>Тип:коробочный договор</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BoxId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор  коробки
+					
+Тype = BOX</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsActivated" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак активации коробки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsSold" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Признак продажи коробки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BoxActivationTypeId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип активации коробки
+
+SysId=XML
+Type=D_BOXACTIVATION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StoaType">
+		<xs:annotation>
+			<xs:documentation>Тип: информация о СТОА</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StoaId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор СТОА
+
+Type = STOA</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование СТОА</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="cmn:AddressType">
+				<xs:annotation>
+					<xs:documentation>Адрес СТОА</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phones" type="cmn:PhonesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Телефона СТОА</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TechnicalDataType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи технической составляющей сообщения</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Originator" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код системы-отправителя оригинального сообщения. СКК 6.1.27</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MessageId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CorrelationId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Бизнес идентификатор сообщения. Данный идентификатор позволяет системе инициатору однозначно ассоциировать пришедший ответ с запросом</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActionId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор атомарной операции</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MessageCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MessageType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Тип сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Priority" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Приоритет выгружаемого сообщения. 0 – низший, 9 – высший</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupId" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор группы сообщений</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupSeq" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Уникальный идентификатор сообщения в рамках группы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Recipients" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Список систем-получателей, разделённых через , или ;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponseRequired" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Требуется немедленный ответ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NotificationRequired" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Требуется подтверждение обработки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentScheduleCoverType">
+		<xs:annotation>
+			<xs:documentation>Тип для описания оплаты по конкретному покрытию в рамках одной строчки графика платежей</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CoverId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор экземпляра страхового покрытия в системе
+
+Type=COVER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentSum" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Сумма платежа по покрытию</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StatementInfoType">
+		<xs:annotation>
+			<xs:documentation>Информация об отчёта агента</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Номер отчёта агента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата отчёта агента</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DiscountType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи причины и величины скидки(акция)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DiscountTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор  причины скидки.
+
+Ids:
+1-Скидка за счёт КВ
+2-Абстрактная акция
+
+SysId=XML
+Type=DISCOUNTTYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DiscountValueTypeId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор типа значения скидки.
+
+Ids:
+1-Суммовой (в значении  указывается конкретное значение в валюте договора), например 1500 (рублей)
+2-Процентный (указывается процент скидки)
+SysId=XML
+Type=D_DISCOUNTVALTYPE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DiscountValue" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Значение скидки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Промокод и т.п.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectStatusType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи статуса объекта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ObjectId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор и тип сущности, чей статус передаётся</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор статуса</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SystemDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Дата и время установки статуса в системе</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата и время с которых начинает действовать передаваемый статус объекта в системе-источнике (бизнес-дата)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectStatusMessageType">
+		<xs:annotation>
+			<xs:documentation>Тип для формирования сообщения о статусе объекта</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TechData" type="cmn:TechnicalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Техническая составляющая сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BusinessData">
+				<xs:annotation>
+					<xs:documentation>Бизнес-данные</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ObjectStatus" type="cmn:ObjectStatusType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Номер версии схемы</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ChangeSequenceId" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Состояние бизнес-объекта. Должен меняться при каждой операции изменения бизнес значимого состояния объекта</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="ObjectStatus">
+		<xs:annotation>
+			<xs:documentation>Элемент для передачи статуса объекта</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="cmn:ObjectStatusMessageType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="FileType">
+		<xs:annotation>
+			<xs:documentation>Тип для передачи прикрепленного документа (файла)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileId" type="cmn:ObjIdType">
+				<xs:annotation>
+					<xs:documentation>Идентификатор файла системы, в которой хранится документ
+
+SysId:
+Кассандра - FILESTORE
+ТЕССА - TESSA
+Либо код системы-источника
+Type=FILE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GroupFileId" type="cmn:ObjIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Идентификатор группы файлов. Используется в том случае, если 1 файл физически разделён на несколько. В этом случае этот идентификатор будет общим для всей группы</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileNumber" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер файла в группе, используется для того, чтобы в верной последовательности слить файлы в один</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="URL" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ссылка на документ. Обязательно должен быть заполнен, если отсутствует тег FileBody</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Имя файла документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileType" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип файла: pdf, doc, docx,jpg,png и т.п.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocumentName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Имя документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileBody" type="xs:base64Binary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Содержимое файла в base64. Обязательно должен присутствовать, если тег URL отсутствует либо пустой</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

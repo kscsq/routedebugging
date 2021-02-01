@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring" xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:ws="http://ws.ekis.corpit/"
+       xmlns:pay="http://rgs.ru/schema/payment10"
+       xmlns:ns2="http://rgs.ru/esb/" xmlns:soap="http://cxf.apache.org/bindings/soap"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.12.0-spring.xsd http://cxf.apache.org/bindings/soap http://cxf.apache.org/schemas/configuration/soap.xsd">
+
+    <bean id="sapicm.InternalJmsFactory" class="com.ibm.mq.jms.MQConnectionFactory">
+        <property name="queueManager" value="${mq.queueManager}"/>
+        <property name="port" value="${mq.port}"/>
+        <property name="hostName" value="${mq.hostName}"/>
+        <property name="transportType" value="${mq.transportType}"/>
+        <property name="channel" value="${mq.sapicm.channel}"/>
+    </bean>
+    <bean id="sapicm.JmsConnectionFactory"
+          class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+        <property name="targetConnectionFactory" ref="sapicm.InternalJmsFactory"/>
+        <!--        <property name="username" value="${mq.sapicm.username}"/>-->
+        <!--        <property name="password" value="${mq.sapicm.password}"/>-->
+    </bean>
+    <bean id="sapicm.JmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+        <property name="connectionFactory" ref="sapicm.JmsConnectionFactory"/>
+    </bean>
+    <bean id="sapicm.JmsConnectionFactoryConsumer" class="org.springframework.jms.connection.CachingConnectionFactory"
+          destroy-method="destroy">
+        <property name="targetConnectionFactory" ref="sapicm.JmsConnectionFactory"/>
+        <property name="sessionCacheSize" value="${mq.sapicm.connectionPool.size}"/>
+        <property name="reconnectOnException" value="true"/>
+    </bean>
+    <bean id="sapicm.Consumer" class="org.apache.camel.component.jms.JmsComponent">
+        <property name="connectionFactory" ref="sapicm.JmsConnectionFactoryConsumer"/>
+        <property name="useMessageIDAsCorrelationID" value="true"/>
+        <property name="transacted" value="true"/>
+        <property name="transactionManager" ref="sapicm.JmsTransactionManager"/>
+        <property name="receiveTimeout" value="${mq.sapicm.receive.timeout}"/>
+    </bean>
+    <bean id="sapicm.JmsConnectionFactoryProducer" class="org.springframework.jms.connection.CachingConnectionFactory"
+          destroy-method="destroy">
+        <property name="targetConnectionFactory" ref="sapicm.JmsConnectionFactory"/>
+        <property name="sessionCacheSize" value="${mq.sapicm.connectionPool.size}"/>
+        <property name="reconnectOnException" value="true"/>
+    </bean>
+    <bean id="sapicm.Producer" class="org.apache.camel.component.jms.JmsComponent">
+        <property name="connectionFactory" ref="sapicm.JmsConnectionFactoryProducer"/>
+        <property name="useMessageIDAsCorrelationID" value="true"/>
+        <property name="transacted" value="true"/>
+        <property name="transactionManager" ref="sapicm.JmsTransactionManager"/>
+    </bean>
+
+    <cxf:cxfEndpoint id="ekisTessa"
+                     address="http://localhost:9092/soap/v1/soaptest"
+                     serviceClass="corpit.ekis.ws.ReceivePackageData"/>
+
+<!--    <bean id="testProcessor" class="com.example.demo.TestProcessor"></bean>-->
+
+    <camel:camelContext id="testCamelContext" xmlns="http://camel.apache.org/schema/spring">
+        <onException>
+            <exception>java.lang.Exception</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="log:log"/>
+<!--            <process ref="testProcessor"></process>-->
+            <setBody>
+                <simple>Exception: ${in.header.CamelExceptionCaught}</simple>
+            </setBody>
+            <to uri="log:log"/>
+        </onException>
+
+        <route id="test">
+            <from uri="direct:start"></from>
+            <!--            <process ref="testProcessor"></process>-->
+            <!--            <setBody>-->
+            <!--                <simple>${body.getPackageData()}</simple>-->
+            <!--            </setBody>-->
+            <to uri="arina-maplab.mapforce:file:src/main/resources/mfd/ekisToTessa.mfd"/>
+<!--            <log message="${body}"></log>-->
+            <to uri="log:log"></to>
+            <unmarshal>
+                <jaxb contextPath="corpit.ekis.ws"/>
+            </unmarshal>
+            <!--            <to uri="sapicm.Consumer:queue:EKIS.INPUT?concurrentConsumers=1&amp;exchangePattern=InOnly"></to>-->
+            <to uri="log:log"></to>
+<!--            <setHeader headerName="operationNamespace">-->
+<!--                <constant>http://ws.ekis.corpit/</constant>-->
+<!--            </setHeader>-->
+<!--            <setHeader headerName="operationName">-->
+<!--                <constant>receivePackageData</constant>-->
+<!--            </setHeader>-->
+            <to uri="cxf:bean:ekisTessa?defaultOperationName=receivePackageData&amp;defaultOperationNamespace=http://ws.ekis.corpit/"/>
+            <to uri="log:log"></to>
+        </route>
+    </camel:camelContext>
+
+
+</beans>
